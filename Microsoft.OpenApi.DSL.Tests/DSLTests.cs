@@ -55,21 +55,29 @@ namespace Microsoft.OpenApi.DSL.Tests
         [Fact]
         public void GenerateOpenApiFirstExampleDocument()
         {
-            object _;
-
             var document = Document("1.0.0", "Swagger Petstore (Simple)");
             var testPath = document / "test";
             var getOperation = testPath
                 <= (OperationType.Get, "Returns all pets from the system that the user has access to")
                 ;
-            
 
-            var outputString = document.Document.Serialize(OpenApiSpecVersion.OpenApi3_0, OpenApiFormat.Yaml);
-            _output.WriteLine(outputString);
+            OutputApi(document.Document);
 
-            _output.WriteLine(new string('-', 30));
-            _output.WriteLine(SampleDocument.Serialize(OpenApiSpecVersion.OpenApi3_0, OpenApiFormat.Yaml));
+            OutputApi(new DocumentDefinitionTests.MyDocument().Root.Document);
+
+            OutputApi(SampleDocument);
         }
+
+        private string OutputApi(OpenApiDocument api)
+        {
+            var output = api.Serialize(OpenApiSpecVersion.OpenApi3_0, OpenApiFormat.Yaml);
+            _output.WriteLine(output);
+            _output.WriteLine("");
+            _output.WriteLine(new string('-', 50));
+            _output.WriteLine("");
+            return output;
+        }
+
 
         [Fact]
         public void SuperSyntaxTree()

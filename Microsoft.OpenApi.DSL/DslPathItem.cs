@@ -16,19 +16,12 @@ namespace Microsoft.OpenApi.DSL
         public DslDocument Document { get; }
         public OpenApiPathItem PathItem { get; }
 
-        [Obsolete("Use the <= operator")]
-        public DslOperation this[OperationType operationType] => this.GetOperation(operationType);
 
-        public static DslOperation operator <=(DslPathItem pathItem, OperationType operationType)
-            => pathItem.GetOperation(operationType);
-        public static DslOperation operator >=(DslPathItem pathItem, OperationType operationType)
-            => pathItem <= operationType;
-
-        public static DslOperation operator <=(DslPathItem pathItem, (OperationType operationType, string description) properties)
-            => pathItem.GetOperation(properties.operationType, properties.description);
-        public static DslOperation operator >=(DslPathItem pathItem, (OperationType operationType, string description) properties)
-            => pathItem <= properties;
+        public static DslOperation operator <=(DslPathItem pathItem, OperationType operationType) => pathItem.GetOperation(operationType);
+        public static DslOperation operator <=(DslPathItem pathItem, (OperationType operationType, string description) properties) => pathItem.GetOperation(properties.operationType, properties.description);
 
 
+        public static DslOperation operator >=(DslPathItem pathItem, OperationType operationType) => throw new NotImplementedException();
+        public static DslOperation operator >=(DslPathItem pathItem, (OperationType operationType, string description) properties) => throw new NotImplementedException();
     }
 }

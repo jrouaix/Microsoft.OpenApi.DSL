@@ -5,7 +5,7 @@ using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.DSL
 {
-    public class DslOperation //: IEnumerable
+    public class DslOperation : IHaveUpper<DslPathItem>
     {
         public DslOperation(DslPathItem pathItem, OpenApiOperation operation)
         {
@@ -13,6 +13,7 @@ namespace Microsoft.OpenApi.DSL
             Operation = operation;
         }
 
+        public DslPathItem _ => PathItem;
         public DslPathItem PathItem { get; }
         public OpenApiOperation Operation { get; }
 
@@ -20,6 +21,8 @@ namespace Microsoft.OpenApi.DSL
         {
             return Operation.Responses.Values.GetEnumerator();
         }
+
+
 
         public static DslOperations operator <=(DslOperation operation, OperationType operationType)
             => new DslOperations(operation.PathItem, operation.PathItem <= operationType);
