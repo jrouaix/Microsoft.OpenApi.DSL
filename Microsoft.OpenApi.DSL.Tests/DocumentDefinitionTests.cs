@@ -7,15 +7,15 @@ namespace Microsoft.OpenApi.DSL.Tests
 {
     public class DocumentDefinitionTests
     {
-        public class MyDocument : DocumentDefinition<MyDocument>
+        public class MyApi : DocumentDefinition<MyApi>
         {
-            public MyDocument() : base("1.0.0", "Swagger Petstore (Simple)")
+            public MyApi() : base("1.0.0", "Swagger Petstore (Simple)")
             {
             }
 
-            Path Pets => () => Root / "pets";
+            static public Path Pets => () => Root / "pets";
 
-            Operation GetPets => () => Pets() <= (OperationType.Get, "Returns all pets from the system that the user has access to");
+            static public Operation GetPets => () => Pets() <= (OperationType.Get, "Returns all pets from the system that the user has access to");
         }
 
 

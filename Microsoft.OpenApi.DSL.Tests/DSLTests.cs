@@ -63,7 +63,7 @@ namespace Microsoft.OpenApi.DSL.Tests
 
             OutputApi(document.Document);
 
-            OutputApi(new DocumentDefinitionTests.MyDocument().Root.Document);
+            OutputApi(DocumentDefinitionTests.MyApi.Root.Document);
 
             OutputApi(SampleDocument);
         }
