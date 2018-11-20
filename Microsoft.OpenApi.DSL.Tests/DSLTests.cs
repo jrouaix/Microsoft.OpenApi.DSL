@@ -57,13 +57,11 @@ namespace Microsoft.OpenApi.DSL.Tests
         {
             var document = Document("1.0.0", "Swagger Petstore (Simple)");
             document.Document.Servers.Add(new OpenApiServer() { Url = "http://petstore.swagger.io/api" });
-
             var testPath = document / "pets";
             var getOperation = testPath
                 <= (OperationType.Get, "Returns all pets from the system that the user has access to")
                     > (200, "OK")
                 ;
-
 
             var inline = OutputApi(document.Document);
             var classDef = OutputApi(DocumentDefinitionTests.MyApi.Root.Document);
@@ -71,6 +69,22 @@ namespace Microsoft.OpenApi.DSL.Tests
 
             inline.ShouldBe(sample);
             classDef.ShouldBe(sample);
+        }
+
+        [Fact]
+        public void SuperSyntaxTree()
+        {
+            var document = Document("1.0.0", "Swagger Petstore (Simple)");
+            var testPath = document / "test";
+            var _ = testPath <= (OperationType.Get, "Returns all pets from the system that the user has access to");
+            _ = testPath <= (OperationType.Post, "Change something");
+            _ = testPath <= (OperationType.Head, "Mind blown");
+
+            _ = document / "Hello"
+                <= (OperationType.Get, "Say hello")
+                ;
+
+            OutputApi(document.Document);
         }
 
         private string OutputApi(OpenApiDocument api)
@@ -81,26 +95,6 @@ namespace Microsoft.OpenApi.DSL.Tests
             _output.WriteLine(new string('-', 50));
             _output.WriteLine("");
             return output;
-        }
-
-
-        [Fact]
-        public void SuperSyntaxTree()
-        {
-            var document = Document("1.0.0", "Swagger Petstore (Simple)");
-            var _ = document / "test"
-                <= (OperationType.Get, "Returns all pets from the system that the user has access to")
-                //<= (OperationType.Post, "Change something")
-                //<= (OperationType.Head, "Mind blown")
-                ;
-
-            var __ = document / "Hello"
-                <= (OperationType.Get, "Say hello")
-                ;
-
-
-            var outputString = document.Document.Serialize(OpenApiSpecVersion.OpenApi3_0, OpenApiFormat.Yaml);
-            _output.WriteLine(outputString);
         }
     }
 
