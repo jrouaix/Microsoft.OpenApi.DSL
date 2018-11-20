@@ -57,8 +57,7 @@ namespace Microsoft.OpenApi.DSL.Tests
         {
             var document = Document("1.0.0", "Swagger Petstore (Simple)");
             document.Document.Servers.Add(new OpenApiServer() { Url = "http://petstore.swagger.io/api" });
-            var testPath = document / "pets";
-            var getOperation = testPath
+            var _ = document / "pets"
                 <= (OperationType.Get, "Returns all pets from the system that the user has access to")
                     > (200, "OK")
                 ;
