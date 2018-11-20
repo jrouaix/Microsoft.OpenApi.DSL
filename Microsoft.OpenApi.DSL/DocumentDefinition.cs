@@ -12,6 +12,9 @@ namespace Microsoft.OpenApi.DSL
 
     public delegate DslOperation Operation();
 
+    public delegate DslResponse Response();
+
+
     public class DocumentDefinition<TDocumentDefinition>
         where TDocumentDefinition : DocumentDefinition<TDocumentDefinition>, new()
     {
@@ -38,6 +41,9 @@ namespace Microsoft.OpenApi.DSL
                             break;
                         case Type t when t == typeof(Operation):
                             ((Operation)deleg)();
+                            break;
+                        case Type t when t == typeof(Response):
+                            ((Response)deleg)();
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();

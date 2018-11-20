@@ -11,13 +11,14 @@ namespace Microsoft.OpenApi.DSL.Tests
         {
             public MyApi() : base("1.0.0", "Swagger Petstore (Simple)")
             {
+                Root.Document.Servers.Add(new OpenApiServer() { Url = "http://petstore.swagger.io/api" });
             }
 
-            static public Path Pets => () => Root / "pets";
+            public static Path Pets => () => Root / "pets";
 
-            static public Operation GetPets => () => Pets() <= (OperationType.Get, "Returns all pets from the system that the user has access to");
+            public static Operation GetPets => () => Pets() <= (OperationType.Get, "Returns all pets from the system that the user has access to");
+
+            Response GetPets200 => () => GetPets() > (200, "OK");
         }
-
-
     }
 }

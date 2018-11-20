@@ -27,9 +27,9 @@ namespace Microsoft.OpenApi.DSL.Tests
                 Title = "Swagger Petstore (Simple)",
             },
             Servers = new List<OpenApiServer>
-                {
-                    new OpenApiServer { Url = "http://petstore.swagger.io/api" }
-                },
+            {
+                new OpenApiServer { Url = "http://petstore.swagger.io/api" }
+            },
             Paths = new OpenApiPaths
             {
                 ["/pets"] = new OpenApiPathItem
@@ -56,16 +56,21 @@ namespace Microsoft.OpenApi.DSL.Tests
         public void GenerateOpenApiFirstExampleDocument()
         {
             var document = Document("1.0.0", "Swagger Petstore (Simple)");
-            var testPath = document / "test";
+            document.Document.Servers.Add(new OpenApiServer() { Url = "http://petstore.swagger.io/api" });
+
+            var testPath = document / "pets";
             var getOperation = testPath
                 <= (OperationType.Get, "Returns all pets from the system that the user has access to")
+                    > (200, "OK")
                 ;
 
-            OutputApi(document.Document);
 
-            OutputApi(DocumentDefinitionTests.MyApi.Root.Document);
+            var inline = OutputApi(document.Document);
+            var classDef = OutputApi(DocumentDefinitionTests.MyApi.Root.Document);
+            var sample = OutputApi(SampleDocument);
 
-            OutputApi(SampleDocument);
+            inline.ShouldBe(sample);
+            classDef.ShouldBe(sample);
         }
 
         private string OutputApi(OpenApiDocument api)
@@ -85,8 +90,8 @@ namespace Microsoft.OpenApi.DSL.Tests
             var document = Document("1.0.0", "Swagger Petstore (Simple)");
             var _ = document / "test"
                 <= (OperationType.Get, "Returns all pets from the system that the user has access to")
-                <= (OperationType.Post, "Change something")
-                <= (OperationType.Head, "Mind blown")
+                //<= (OperationType.Post, "Change something")
+                //<= (OperationType.Head, "Mind blown")
                 ;
 
             var __ = document / "Hello"

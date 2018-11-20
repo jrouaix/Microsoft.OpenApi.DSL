@@ -22,17 +22,20 @@ namespace Microsoft.OpenApi.DSL
             return Operation.Responses.Values.GetEnumerator();
         }
 
+        public static DslResponse operator >(DslOperation operation, (int statusCode, string description) properties) 
+            => operation.GetResponse(properties.statusCode.ToString(), properties.description);
+        public static DslResponse operator <(DslOperation operation, (int statusCode, string description) properties)
+            => operation > properties;
 
+        //public static DslOperations operator <=(DslOperation operation, OperationType operationType)
+        //    => new DslOperations(operation.PathItem, operation.PathItem <= operationType);
+        //public static DslOperations operator >=(DslOperation operation, OperationType operationType)
+        //    => operation <= operationType;
 
-        public static DslOperations operator <=(DslOperation operation, OperationType operationType)
-            => new DslOperations(operation.PathItem, operation.PathItem <= operationType);
-        public static DslOperations operator >=(DslOperation operation, OperationType operationType)
-            => operation <= operationType;
-
-        public static DslOperations operator <=(DslOperation operation, (OperationType operationType, string description) properties)
-            => new DslOperations(operation.PathItem, operation.PathItem <= properties);
-        public static DslOperations operator >=(DslOperation operation, (OperationType operationType, string description) properties)
-            => operation <= properties;
+        //public static DslOperations operator <=(DslOperation operation, (OperationType operationType, string description) properties)
+        //    => new DslOperations(operation.PathItem, operation.PathItem <= properties);
+        //public static DslOperations operator >=(DslOperation operation, (OperationType operationType, string description) properties)
+        //    => operation <= properties;
     }
 
     //public static class DslOperationExtensions
